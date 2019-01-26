@@ -5,15 +5,25 @@ import java.io.StringWriter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
+import model.Deleted;
+import model.InhibitEvent;
+import model.Inserted;
 import utils.Util;
 
 public class Main {
 
-	static String host = "amqp://192.168.43.180"; // message borker host
-	static String username = "admin";
-	static String password = "admin";
+	static String hostAMQP = "amqp://192.168.43.180"; // message borker host
+	static String hostJMS = "smf://192.168.43.178"; // message borker host
+	static String hostMQTT = "tcp://localhost:1883";
+	static String vpnName = "Solace_Spark_VPN";
+	static String username = "spark_client";
+	static String password = "spark_client";
 
 	public static void main(String[] args) {
+		
+		while (true) {
+			
+		
 		String equip_OID = Util.getRandomEquip_OID();
 		String recipe_OID = Util.getRecipe_OID();
 		String step_OID = Util.getStep_OID_OID();
@@ -44,15 +54,25 @@ public class Main {
 			// Write to list to a writer
 			m.marshal(inhibitEvent, writer);
 			String messagePayload = writer.toString();
-
 			// System.out.println(messagePayload);
 
-			Publisher publisher = new Publisher(host, username, password);
-			publisher.publish(messagePayload);
+			/*PublisherAMQP publisherAMQP = new PublisherAMQP(hostAMQP, username, password);
+			publisherAMQP.publish(messagePayload);*/
+			
+			/*PublisherJMS publisherJMS = new PublisherJMS(hostJMS, username, password, vpnName);
+			publisherJMS.publish(messagePayload);*/
+			
+			PublisherMQTT publisherMQTT = new PublisherMQTT(hostMQTT);
+			publisherMQTT.publish(messagePayload, equip_OID);
+			
+			Thread.sleep(5000);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		}
+		
 	}
 
 }

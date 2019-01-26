@@ -8,7 +8,7 @@ import javax.jms.Topic;
 
 import org.apache.qpid.jms.JmsConnectionFactory;
 
-public class Publisher {
+public class PublisherAMQP {
 
 	final String TOPIC_NAME = "SA/test";
 
@@ -17,7 +17,7 @@ public class Publisher {
 	private String password;
 	
 	
-	public Publisher(String host, String username, String password) {
+	public PublisherAMQP(String host, String username, String password) {
 		super();
 		this.host = host;
 		this.username = username;

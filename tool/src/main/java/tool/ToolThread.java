@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.xml.bind.JAXBContext;
@@ -31,6 +32,7 @@ public class ToolThread extends Thread {
 			boolean hold_flagBoolean = Util.getHold_flagBoolean();
 			String hold_flagInserted = "";
 			String hold_flagDeleted = "";
+			String event_datetime = Util.getData().toString();
 
 			if (hold_flagBoolean) {
 				hold_flagInserted = "Y";
@@ -40,9 +42,9 @@ public class ToolThread extends Thread {
 				hold_flagDeleted = "Y";
 			}
 
-			Inserted inserted = new Inserted(equip_OID, recipe_OID, step_OID, hold_flagInserted);
+			Inserted inserted = new Inserted(equip_OID, recipe_OID, step_OID, hold_flagInserted, event_datetime );
 
-			Deleted deleted = new Deleted(equip_OID, recipe_OID, step_OID, hold_flagDeleted);
+			Deleted deleted = new Deleted(equip_OID, recipe_OID, step_OID, hold_flagDeleted, event_datetime);
 
 			InhibitEvent inhibitEvent = new InhibitEvent(inserted, deleted);
 

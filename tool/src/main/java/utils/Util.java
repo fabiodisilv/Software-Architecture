@@ -1,6 +1,8 @@
 package utils;
 
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.Date;
+
 
 public class Util {
 	public static String getRandomEquip_OID() {
@@ -25,5 +27,10 @@ public class Util {
 		int randomNum = ThreadLocalRandom.current().nextInt(min, max + 1);
 
 		return randomNum;
+	}
+	
+	public static Date getData() {
+	      Date date = new Date();
+	      return date;
 	}
 }

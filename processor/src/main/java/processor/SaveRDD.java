@@ -120,7 +120,7 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 	private void insertDecodedInsertedElement(DecodedInsertedElement decodedInsertedElement) {
 		NoSQLManager noSQLManager = new NoSQLManager();
 		
-		noSQLManager.insertPerson(decodedInsertedElement);
+		noSQLManager.insertEvent(decodedInsertedElement);
 	}
 	
 }

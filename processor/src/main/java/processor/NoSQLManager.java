@@ -43,7 +43,7 @@ public class NoSQLManager {
 		restHighLevelClient = null;
 	}
 
-	public void insertPerson(DecodedInsertedElement decodedInsertedElement) {
+	public void insertEvent(DecodedInsertedElement decodedInsertedElement) {
 		makeConnection();
 
 		String eventID = (UUID.randomUUID().toString());

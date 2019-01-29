@@ -22,10 +22,10 @@ public class PublisherMQTT {
 
 	public void publish(String payload, String tool) {
 		System.out.println("TopicPublisher initializing...");
-
+		String rand = String.valueOf(Math.random());
 		try {
 			// Create an Mqtt client
-			MqttClient mqttClient = new MqttClient(host, tool);
+			MqttClient mqttClient = new MqttClient(host, tool + rand);
 			/*
 			 * MqttConnectOptions connOpts = new MqttConnectOptions();
 			 * connOpts.setCleanSession(true); connOpts.setUserName(username);

@@ -8,13 +8,8 @@ public class Deleted {
 	private String hold_flag;
 	private String event_datetime;
 
-	public Deleted(String equip_OID, String recipe_OID, String step_OID, String hold_flag, String event_datetime) {
-		super();
-		this.equip_OID = equip_OID;
-		this.recipe_OID = recipe_OID;
-		this.step_OID = step_OID;
-		this.hold_flag = hold_flag;
-		this.event_datetime = event_datetime;
+	public Deleted() {
+		
 	}
 
 	public String getEquip_OID() {

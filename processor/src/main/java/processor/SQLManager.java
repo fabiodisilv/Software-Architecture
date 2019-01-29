@@ -16,51 +16,48 @@ import java.util.concurrent.TimeUnit;
 
 import javax.management.Query;
 
+import scala.annotation.meta.setter;
+
 public class SQLManager {
 
-	private String server = "localhost";
-	private String database = "raw_data";
-	private String user = "sa";
-	private String password = "sa";
+	private String serverSQL;
+	private String databaseSQL;
+	private String userSQL;
+	private String passwordSQL;
+
+	public SQLManager() {
+		setConfiguration();
+	}
 
 	public Connection connect() {
 
 		Connection connection = null;
 
 		try {
-			// Class.forName("com.mysql.jdbc.Driver");
 
-			connection = DriverManager.getConnection(
-					"jdbc:mysql://" + server + "/" + database + "?" + "user=" + user + "&password=" + password + "");
+			connection = DriverManager.getConnection("jdbc:mysql://" + serverSQL + "/" + databaseSQL + "?" + "user="
+					+ userSQL + "&password=" + passwordSQL + "");
 		} catch (Exception e) {
-			try {
-				connection = DriverManager.getConnection("jdbc:mysql://" + server + "/" + database + "?" + "user="
-						+ user + "&password=" + password
-						+ "&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
+			e.printStackTrace();
 		}
 		return connection;
 
 	}
 
 	public String getEquipeName(String equipeID) {
-		String equipeName="";
+		String equipeName = "";
 		Connection connection = connect();
 
 		// PreparedStatements can use variables and are more efficient
 		PreparedStatement preparedStatement;
-		
+
 		String query = "SELECT name FROM equipe WHERE ID = ?";
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
 
 			preparedStatement.setString(1, equipeID);
-			
+
 			ResultSet rs;
 
 			rs = preparedStatement.executeQuery();
@@ -79,19 +76,19 @@ public class SQLManager {
 	}
 
 	public String getRecipeName(String recipeID) {
-		String recipeName="";
+		String recipeName = "";
 		Connection connection = connect();
 
 		// PreparedStatements can use variables and are more efficient
 		PreparedStatement preparedStatement;
-		
+
 		String query = "SELECT name FROM recipe WHERE ID = ?";
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
 
 			preparedStatement.setString(1, recipeID);
-			
+
 			ResultSet rs;
 
 			rs = preparedStatement.executeQuery();
@@ -108,21 +105,21 @@ public class SQLManager {
 		return recipeName;
 
 	}
-	
+
 	public String getStepName(String stepID) {
-		String stepName="";
+		String stepName = "";
 		Connection connection = connect();
 
 		// PreparedStatements can use variables and are more efficient
 		PreparedStatement preparedStatement;
-		
+
 		String query = "SELECT name FROM step WHERE ID = ?";
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
 
 			preparedStatement.setString(1, stepID);
-			
+
 			ResultSet rs;
 
 			rs = preparedStatement.executeQuery();
@@ -140,5 +137,28 @@ public class SQLManager {
 
 	}
 
+	private void setConfiguration() {
+
+		try {
+			Properties prop = new Properties();
+			String propFileName = "resources/config.properties";
+
+			File initialFile = new File(propFileName);
+
+			InputStream inputStream = new FileInputStream(initialFile);
+
+			prop.load(inputStream);
+
+			// get the property value
+			serverSQL = prop.getProperty("serverSQL");
+			databaseSQL = prop.getProperty("databaseSQL");
+			userSQL = prop.getProperty("userSQL");
+			passwordSQL = prop.getProperty("passwordSQL");
+
+			inputStream.close();
+		} catch (Exception e) {
+			System.out.println("Exception: " + e);
+		}
+	}
 
 }

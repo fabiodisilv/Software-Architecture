@@ -17,22 +17,22 @@ import java.util.Map;
 import java.util.UUID;
 
 public class NoSQLManager {
-	private static final String HOST = "localhost";
-	private static final int PORT_ONE = 9200;
-	private static final int PORT_TWO = 9201;
-	private static final String SCHEME = "http";
+	private String hostNoSQL;
+	private int portOneNoSQL;
+	private int portTwoNoSQL;
+	private String schemeNoSQL;
 
 	private static RestHighLevelClient restHighLevelClient;
 	private static ObjectMapper objectMapper = new ObjectMapper();
 
-	private static final String INDEX = "results";
-	private static final String TYPE = "events";
+	private static final String indexNoSQL = "results";
+	private static final String typeNoSQL = "events";
 
 	private synchronized RestHighLevelClient makeConnection() {
 
 		if (restHighLevelClient == null) {
 			restHighLevelClient = new RestHighLevelClient(
-					RestClient.builder(new HttpHost(HOST, PORT_ONE, SCHEME), new HttpHost(HOST, PORT_TWO, SCHEME)));
+					RestClient.builder(new HttpHost(hostNoSQL, portOneNoSQL, schemeNoSQL), new HttpHost(hostNoSQL, portTwoNoSQL, schemeNoSQL)));
 		}
 
 		return restHighLevelClient;
@@ -59,7 +59,7 @@ public class NoSQLManager {
 		dataMap.put("hold_type", decodedInsertedElement.getHold_type());
 		dataMap.put("hold_flag", decodedInsertedElement.getHold_flag());
 
-		IndexRequest indexRequest = new IndexRequest(INDEX, TYPE, eventID).source(dataMap);
+		IndexRequest indexRequest = new IndexRequest(indexNoSQL, typeNoSQL, eventID).source(dataMap);
 		try {
 
 			IndexResponse response = restHighLevelClient.index(indexRequest);

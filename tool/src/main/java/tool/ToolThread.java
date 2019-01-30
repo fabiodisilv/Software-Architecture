@@ -18,6 +18,7 @@ import utils.Util;
 public class ToolThread extends Thread {
 	
 	private String hostMQTT;
+	private String topic;
 	
 	@Override
 	public void run() {
@@ -58,10 +59,10 @@ public class ToolThread extends Thread {
 				m.marshal(inhibitEvent, writer);
 				String messagePayload = writer.toString();
 
-				PublisherMQTT publisherMQTT = new PublisherMQTT(hostMQTT);
+				PublisherMQTT publisherMQTT = new PublisherMQTT(hostMQTT, topic);
 				publisherMQTT.publish(messagePayload, equip_OID);
 
-				//Thread.sleep(5000);
+				Thread.sleep(5000);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -85,7 +86,8 @@ public class ToolThread extends Thread {
 
 			// get the property value
 			hostMQTT = prop.getProperty("hostMQTT");
-
+			topic = prop.getProperty("topic");
+			
 			inputStream.close();
 		} catch (Exception e) {
 			System.out.println("Exception: " + e);

@@ -2,25 +2,17 @@ package processor;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
-
-import javax.management.Query;
-
-import scala.annotation.meta.setter;
 
 public class SQLManager {
 
-	private String serverSQL;
+	private String hostSQL;
 	private String databaseSQL;
 	private String userSQL;
 	private String passwordSQL;
@@ -35,7 +27,7 @@ public class SQLManager {
 
 		try {
 
-			connection = DriverManager.getConnection("jdbc:mysql://" + serverSQL + "/" + databaseSQL + "?" + "user="
+			connection = DriverManager.getConnection("jdbc:mysql://" + hostSQL + "/" + databaseSQL + "?" + "user="
 					+ userSQL + "&password=" + passwordSQL + "");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -150,7 +142,7 @@ public class SQLManager {
 			prop.load(inputStream);
 
 			// get the property value
-			serverSQL = prop.getProperty("serverSQL");
+			hostSQL = prop.getProperty("hostSQL");
 			databaseSQL = prop.getProperty("databaseSQL");
 			userSQL = prop.getProperty("userSQL");
 			passwordSQL = prop.getProperty("passwordSQL");

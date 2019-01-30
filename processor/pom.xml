@@ -5,12 +5,7 @@
 	<groupId>it.univaq.disim.sa</groupId>
 	<artifactId>processor</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	
-	<properties>
-		<elasticsearch.version>6.1.2</elasticsearch.version>
-		<jackson.version>2.9.4</jackson.version>
-	</properties>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.spark</groupId>
@@ -47,26 +42,19 @@
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
-			<version>${elasticsearch.version}</version>
+			<version>6.5.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.elasticsearch.client</groupId>
 			<artifactId>elasticsearch-rest-high-level-client</artifactId>
-			<version>${elasticsearch.version}</version>
+			<version>6.6.0</version>
 		</dependency>
 
-		<!-- <dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>${jackson.version}</version> 
-		</dependency> -->
+		<!-- <dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-databind</artifactId> 
+			<version>${jackson.version}</version> </dependency> <dependency> <groupId>com.fasterxml.jackson.core</groupId> 
+			<artifactId>jackson-core</artifactId> <version>${jackson.version}</version> 
+			</dependency> -->
 
 	</dependencies>
 

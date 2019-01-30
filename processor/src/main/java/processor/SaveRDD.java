@@ -5,18 +5,11 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.function.VoidFunction;
 
-import com.esotericsoftware.minlog.Log;
-
-import avro.shaded.com.google.common.collect.ImmutableBiMap.Builder;
 import model.DecodedDeletedElement;
 import model.DecodedInsertedElement;
 import model.Deleted;
@@ -37,13 +30,13 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 
 					for (String m : messagesList) {
 						InhibitEvent inhibitEvent = buildInhibitEvent(m);
-						
+
 						DecodedInsertedElement decodedInsertedElement = decodeInsertedIDs(inhibitEvent.getInserted());
-						
+
 						DecodedDeletedElement decodedDeletedElement = decodeDeletedIDs(inhibitEvent.getDeleted());
-						
+
 						insertDecodedInsertedElement(decodedInsertedElement);
-						
+
 					}
 
 				} catch (Exception e) {
@@ -60,13 +53,13 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 		StringReader messageReader = new StringReader(message);
 
 		JAXBContext jaxbContext;
-		
+
 		try {
 			jaxbContext = JAXBContext.newInstance(InhibitEvent.class);
 
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			InhibitEvent inhibitEvent = (InhibitEvent) unmarshaller.unmarshal(messageReader);
-			
+
 			return inhibitEvent;
 
 		} catch (JAXBException e) {
@@ -76,34 +69,37 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 		}
 
 	}
-	
+
 	private DecodedInsertedElement decodeInsertedIDs(Inserted inserted) {
 		SQLManager sqlManager = new SQLManager();
-		
+
 		DecodedInsertedElement decodedInsertedElement = new DecodedInsertedElement();
+		
 		decodedInsertedElement.setEquipe_OID(inserted.getEquip_OID());
 		decodedInsertedElement.setEquipeName(sqlManager.getEquipeName(inserted.getEquip_OID()));
-		
+
 		decodedInsertedElement.setRecipe_OID(inserted.getRecipe_OID());
 		decodedInsertedElement.setRecipeName(sqlManager.getRecipeName(inserted.getRecipe_OID()));
-		
+
 		decodedInsertedElement.setStep_OID(inserted.getStep_OID());
 		decodedInsertedElement.setStepName(sqlManager.getStepName(inserted.getStep_OID()));
-		
+
 		decodedInsertedElement.setHold_type(inserted.getHold_type());
-		
+
 		decodedInsertedElement.setHold_flag(inserted.getHold_flag());
-	
+		
+		decodedInsertedElement.setEvent_datetime(inserted.getEvent_datetime());
+
 		return decodedInsertedElement;
 	}
-	
+
 	private DecodedDeletedElement decodeDeletedIDs(Deleted deleted) {
 		SQLManager sqlManager = new SQLManager();
 
 		DecodedDeletedElement decodedDeletedElement = new DecodedDeletedElement();
 		decodedDeletedElement.setEquipe_OID(deleted.getEquip_OID());
 		decodedDeletedElement.setEquipeName(sqlManager.getEquipeName(deleted.getEquip_OID()));
-		
+
 		decodedDeletedElement.setRecipe_OID(deleted.getRecipe_OID());
 		decodedDeletedElement.setRecipeName(sqlManager.getRecipeName(deleted.getRecipe_OID()));
 
@@ -114,13 +110,15 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 
 		decodedDeletedElement.setHold_flag(deleted.getHold_flag());
 		
+		decodedDeletedElement.setEvent_datetime(deleted.getEvent_datetime());
+
 		return decodedDeletedElement;
 	}
 
 	private void insertDecodedInsertedElement(DecodedInsertedElement decodedInsertedElement) {
 		NoSQLManager noSQLManager = new NoSQLManager();
-		
+
 		noSQLManager.insertEvent(decodedInsertedElement);
 	}
-	
+
 }

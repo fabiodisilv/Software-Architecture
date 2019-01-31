@@ -13,6 +13,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +28,12 @@ public class NoSQLManager {
 
 	private String indexNoSQL;
 	private String typeNoSQL;
+	
+	private RestHighLevelClient client;
 
 	public NoSQLManager() {
 		setConfiguration();
+		client = makeConnection();
 	}
 
 	private RestHighLevelClient makeConnection() {
@@ -45,7 +49,7 @@ public class NoSQLManager {
 
 	public void insertInsertedEvent(DecodedInsertedElement decodedInsertedElement) {
 
-		RestHighLevelClient client = makeConnection();
+		//RestHighLevelClient client = makeConnection();
 
 		String eventID = (UUID.randomUUID().toString());
 
@@ -71,7 +75,7 @@ public class NoSQLManager {
 			IndexResponse indexResponse = client.index(indexRequest, RequestOptions.DEFAULT);
 			// IndexResponse response = client.index(indexRequest);
 
-			client.close();
+			//client.close();
 
 		} catch (ElasticsearchException e) {
 			e.getDetailedMessage();
@@ -83,7 +87,7 @@ public class NoSQLManager {
 
 	public void insertDeletedEvent(DecodedDeletedElement decodedDeletedElement) {
 
-		RestHighLevelClient client = makeConnection();
+		//RestHighLevelClient client = makeConnection();
 
 		String eventID = (UUID.randomUUID().toString());
 
@@ -108,7 +112,7 @@ public class NoSQLManager {
 			IndexResponse indexResponse = client.index(indexRequest, RequestOptions.DEFAULT);
 			// IndexResponse response = client.index(indexRequest);
 
-			client.close();
+			//client.close();
 
 		} catch (ElasticsearchException e) {
 			e.getDetailedMessage();
@@ -116,6 +120,14 @@ public class NoSQLManager {
 			ex.getLocalizedMessage();
 		}
 
+	}
+	
+	public void closeConnection() {
+		try {
+			client.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void setConfiguration() {

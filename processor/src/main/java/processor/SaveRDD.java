@@ -20,6 +20,7 @@ import model.Inserted;
 public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 
 	private SQLManager sqlManager;
+	private NoSQLManager noSQLManager;
 
 	public void call(JavaRDD<String> messages) throws Exception {
 		if (messages != null && messages.count() > 0) {
@@ -32,6 +33,7 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 				try {
 
 					sqlManager = new SQLManager();
+					noSQLManager = new NoSQLManager();
 
 					for (String m : messagesList) {
 						InhibitEvent inhibitEvent = buildInhibitEvent(m);
@@ -39,7 +41,6 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 						DecodedInsertedElement decodedInsertedElement = decodeInsertedIDs(inhibitEvent.getInserted());
 
 						DecodedDeletedElement decodedDeletedElement = decodeDeletedIDs(inhibitEvent.getDeleted());
-
 						
 						insertEvents(decodedInsertedElement, decodedDeletedElement);
 
@@ -49,6 +50,9 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 					e.printStackTrace();
 				} finally {
 					sqlManager.closeConnection();
+					noSQLManager.closeConnection();
+					
+					
 					System.out.println("Completed!");
 				}
 			}
@@ -125,7 +129,7 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 	private void insertEvents(DecodedInsertedElement decodedInsertedElement,
 			DecodedDeletedElement decodedDeletedElement) {
 
-		NoSQLManager noSQLManager = new NoSQLManager();
+		//NoSQLManager noSQLManager = new NoSQLManager();
 
 		noSQLManager.insertInsertedEvent(decodedInsertedElement);
 

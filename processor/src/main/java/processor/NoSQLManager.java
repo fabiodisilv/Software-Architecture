@@ -24,7 +24,6 @@ public class NoSQLManager {
 	private int portOneNoSQL;
 	private int portTwoNoSQL;
 	private String schemeNoSQL;
-	private int a = 0;
 
 	private String indexNoSQL;
 	private String typeNoSQL;
@@ -48,8 +47,8 @@ public class NoSQLManager {
 
 		RestHighLevelClient client = makeConnection();
 
-		String eventID = (Integer.toString(a));
-		a++;
+		String eventID = (UUID.randomUUID().toString());
+
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		
 		dataMap.put("type", "Inserted");

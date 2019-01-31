@@ -16,12 +16,14 @@ public class SQLManager {
 	private String databaseSQL;
 	private String userSQL;
 	private String passwordSQL;
+	private Connection connection;
 
 	public SQLManager() {
 		setConfiguration();
+		connection = connect();
 	}
 
-	public Connection connect() {
+	private Connection connect() {
 
 		Connection connection = null;
 
@@ -38,7 +40,7 @@ public class SQLManager {
 
 	public String getEquipeName(String equipeID) {
 		String equipeName = "";
-		Connection connection = connect();
+		// Connection connection = connect();
 
 		// PreparedStatements can use variables and are more efficient
 		PreparedStatement preparedStatement;
@@ -56,7 +58,7 @@ public class SQLManager {
 			while (rs.next()) {
 				equipeName = rs.getString("name");
 			}
-			connection.close();
+			// connection.close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -69,7 +71,7 @@ public class SQLManager {
 
 	public String getRecipeName(String recipeID) {
 		String recipeName = "";
-		Connection connection = connect();
+		// Connection connection = connect();
 
 		// PreparedStatements can use variables and are more efficient
 		PreparedStatement preparedStatement;
@@ -87,7 +89,7 @@ public class SQLManager {
 			while (rs.next()) {
 				recipeName = rs.getString("name");
 			}
-			connection.close();
+			// connection.close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -100,7 +102,7 @@ public class SQLManager {
 
 	public String getStepName(String stepID) {
 		String stepName = "";
-		Connection connection = connect();
+		// Connection connection = connect();
 
 		// PreparedStatements can use variables and are more efficient
 		PreparedStatement preparedStatement;
@@ -118,7 +120,7 @@ public class SQLManager {
 			while (rs.next()) {
 				stepName = rs.getString("name");
 			}
-			connection.close();
+			// connection.close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -127,6 +129,14 @@ public class SQLManager {
 
 		return stepName;
 
+	}
+
+	public void closeConnection() {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void setConfiguration() {

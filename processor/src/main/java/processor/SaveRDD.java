@@ -7,6 +7,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
 
+import org.apache.hadoop.classification.InterfaceAudience.Private;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.function.VoidFunction;
 
@@ -18,6 +19,8 @@ import model.Inserted;
 
 public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 
+	private SQLManager sqlManager;
+
 	public void call(JavaRDD<String> messages) throws Exception {
 		if (messages != null && messages.count() > 0) {
 
@@ -28,6 +31,8 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 			if (numRcds > 0) {
 				try {
 
+					sqlManager = new SQLManager();
+
 					for (String m : messagesList) {
 						InhibitEvent inhibitEvent = buildInhibitEvent(m);
 
@@ -35,6 +40,7 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 
 						DecodedDeletedElement decodedDeletedElement = decodeDeletedIDs(inhibitEvent.getDeleted());
 
+						sqlManager.closeConnection();
 						insertEvents(decodedInsertedElement, decodedDeletedElement);
 
 					}
@@ -71,7 +77,7 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 	}
 
 	private DecodedInsertedElement decodeInsertedIDs(Inserted inserted) {
-		SQLManager sqlManager = new SQLManager();
+		// SQLManager sqlManager = new SQLManager();
 
 		DecodedInsertedElement decodedInsertedElement = new DecodedInsertedElement();
 
@@ -94,7 +100,7 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 	}
 
 	private DecodedDeletedElement decodeDeletedIDs(Deleted deleted) {
-		SQLManager sqlManager = new SQLManager();
+		// SQLManager sqlManager = new SQLManager();
 
 		DecodedDeletedElement decodedDeletedElement = new DecodedDeletedElement();
 		decodedDeletedElement.setEquipe_OID(deleted.getEquip_OID());

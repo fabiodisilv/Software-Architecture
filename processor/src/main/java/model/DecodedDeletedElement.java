@@ -10,6 +10,7 @@ public class DecodedDeletedElement {
 	private String stepName;
 	private String hold_type;
 	private String hold_flag;
+	private String event_datetime;
 
 	public String getEquipe_OID() {
 		return equipe_OID;
@@ -73,6 +74,14 @@ public class DecodedDeletedElement {
 
 	public void setHold_flag(String hold_flag) {
 		this.hold_flag = hold_flag;
+	}
+
+	public String getEvent_datetime() {
+		return event_datetime;
+	}
+
+	public void setEvent_datetime(String event_datetime) {
+		this.event_datetime = event_datetime;
 	}
 
 }

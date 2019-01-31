@@ -2,40 +2,34 @@ package processor;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
-
-import javax.management.Query;
-
-import scala.annotation.meta.setter;
 
 public class SQLManager {
 
-	private String serverSQL;
+	private String hostSQL;
 	private String databaseSQL;
 	private String userSQL;
 	private String passwordSQL;
+	private Connection connection;
 
 	public SQLManager() {
 		setConfiguration();
+		connection = connect();
 	}
 
-	public Connection connect() {
+	private Connection connect() {
 
 		Connection connection = null;
 
 		try {
 
-			connection = DriverManager.getConnection("jdbc:mysql://" + serverSQL + "/" + databaseSQL + "?" + "user="
+			connection = DriverManager.getConnection("jdbc:mysql://" + hostSQL + "/" + databaseSQL + "?" + "user="
 					+ userSQL + "&password=" + passwordSQL + "");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -46,7 +40,7 @@ public class SQLManager {
 
 	public String getEquipeName(String equipeID) {
 		String equipeName = "";
-		Connection connection = connect();
+		// Connection connection = connect();
 
 		// PreparedStatements can use variables and are more efficient
 		PreparedStatement preparedStatement;
@@ -64,7 +58,7 @@ public class SQLManager {
 			while (rs.next()) {
 				equipeName = rs.getString("name");
 			}
-			connection.close();
+			// connection.close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -77,7 +71,7 @@ public class SQLManager {
 
 	public String getRecipeName(String recipeID) {
 		String recipeName = "";
-		Connection connection = connect();
+		// Connection connection = connect();
 
 		// PreparedStatements can use variables and are more efficient
 		PreparedStatement preparedStatement;
@@ -95,7 +89,7 @@ public class SQLManager {
 			while (rs.next()) {
 				recipeName = rs.getString("name");
 			}
-			connection.close();
+			// connection.close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -108,7 +102,7 @@ public class SQLManager {
 
 	public String getStepName(String stepID) {
 		String stepName = "";
-		Connection connection = connect();
+		// Connection connection = connect();
 
 		// PreparedStatements can use variables and are more efficient
 		PreparedStatement preparedStatement;
@@ -126,7 +120,7 @@ public class SQLManager {
 			while (rs.next()) {
 				stepName = rs.getString("name");
 			}
-			connection.close();
+			// connection.close();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -135,6 +129,14 @@ public class SQLManager {
 
 		return stepName;
 
+	}
+
+	public void closeConnection() {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void setConfiguration() {
@@ -150,7 +152,7 @@ public class SQLManager {
 			prop.load(inputStream);
 
 			// get the property value
-			serverSQL = prop.getProperty("serverSQL");
+			hostSQL = prop.getProperty("hostSQL");
 			databaseSQL = prop.getProperty("databaseSQL");
 			userSQL = prop.getProperty("userSQL");
 			passwordSQL = prop.getProperty("passwordSQL");

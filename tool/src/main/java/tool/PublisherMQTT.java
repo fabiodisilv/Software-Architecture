@@ -12,12 +12,13 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
  */
 public class PublisherMQTT {
 
-	final String TOPIC_NAME = "sa/test";
+	private String topic;
 
 	private String host;
 
-	public PublisherMQTT(String host) {
+	public PublisherMQTT(String host, String topic) {
 		this.host = host;
+		this.topic=topic;
 	}
 
 	public void publish(String payload, String tool) {
@@ -47,7 +48,7 @@ public class PublisherMQTT {
 			System.out.println("Publishing message: " + payload);
 
 			// Publish the message
-			mqttClient.publish(TOPIC_NAME, message);
+			mqttClient.publish(topic, message);
 
 			// Disconnect the client
 			mqttClient.disconnect();

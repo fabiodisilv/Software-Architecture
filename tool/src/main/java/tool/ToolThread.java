@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.util.Date;
 import java.util.Properties;
 
 import javax.xml.bind.JAXBContext;
@@ -16,15 +15,14 @@ import model.Inserted;
 import utils.Util;
 
 public class ToolThread extends Thread {
-	
+
 	private String hostMQTT;
 	private String topic;
-	private Integer count=0;
-	
-	
+	private Integer count = 0;
+
 	@Override
 	public void run() {
-		
+
 		setConfiguration();
 
 		while (true) {
@@ -45,7 +43,7 @@ public class ToolThread extends Thread {
 				hold_flagDeleted = "Y";
 			}
 
-			Inserted inserted = new Inserted(equip_OID, recipe_OID, step_OID, hold_flagInserted, event_datetime );
+			Inserted inserted = new Inserted(equip_OID, recipe_OID, step_OID, hold_flagInserted, event_datetime);
 
 			Deleted deleted = new Deleted(equip_OID, recipe_OID, step_OID, hold_flagDeleted, event_datetime);
 
@@ -64,9 +62,11 @@ public class ToolThread extends Thread {
 				PublisherMQTT publisherMQTT = new PublisherMQTT(hostMQTT, topic);
 				publisherMQTT.publish(messagePayload, equip_OID);
 
-				count ++;
-				System.out.println("Number of messages sent: " + count.toString());
-				//Thread.sleep(5000);
+				count++;
+
+				System.out.println("Number of messages sent: " + count.toString() + " from the thread "
+						+ ToolThread.currentThread().getName());
+				// Thread.sleep(5000);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -75,7 +75,7 @@ public class ToolThread extends Thread {
 		}
 
 	}
-	
+
 	public void setConfiguration() {
 
 		try {
@@ -91,11 +91,11 @@ public class ToolThread extends Thread {
 			// get the property value
 			hostMQTT = prop.getProperty("hostMQTT");
 			topic = prop.getProperty("topic");
-			
+
 			inputStream.close();
 		} catch (Exception e) {
 			System.out.println("Exception: " + e);
 		}
 	}
-	
+
 }

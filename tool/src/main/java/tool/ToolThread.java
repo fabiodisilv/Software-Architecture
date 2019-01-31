@@ -66,7 +66,8 @@ public class ToolThread extends Thread {
 
 				System.out.println("Number of messages sent: " + count.toString() + " from the thread "
 						+ ToolThread.currentThread().getName());
-				// Thread.sleep(5000);
+				
+				//Thread.sleep(5000);
 
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -26,6 +26,7 @@ public class NoSQLManager {
 	private String schemeNoSQL;
 
 	private String indexNoSQL;
+	private String typeNoSQL;
 
 	public NoSQLManager() {
 		setConfiguration();
@@ -43,13 +44,15 @@ public class NoSQLManager {
 	}
 
 	public void insertInsertedEvent(DecodedInsertedElement decodedInsertedElement) {
-		String typeNoSQL = "inserted";
 
 		RestHighLevelClient client = makeConnection();
 
 		String eventID = (UUID.randomUUID().toString());
 
 		Map<String, Object> dataMap = new HashMap<String, Object>();
+		
+		dataMap.put("type", "Inserted");
+		
 		dataMap.put("eventID", eventID);
 		dataMap.put("equipe_OID", decodedInsertedElement.getEquipe_OID());
 		dataMap.put("equipeName", decodedInsertedElement.getEquipeName());
@@ -80,13 +83,13 @@ public class NoSQLManager {
 
 	public void insertDeletedEvent(DecodedDeletedElement decodedDeletedElement) {
 
-		String typeNoSQL = "deleted";
-
 		RestHighLevelClient client = makeConnection();
 
 		String eventID = (UUID.randomUUID().toString());
 
 		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("type", "Deleted");
+		
 		dataMap.put("eventID", eventID);
 		dataMap.put("equipe_OID", decodedDeletedElement.getEquipe_OID());
 		dataMap.put("equipeName", decodedDeletedElement.getEquipeName());
@@ -132,6 +135,7 @@ public class NoSQLManager {
 			portTwoNoSQL = Integer.parseInt(prop.getProperty("portTwoNoSQL"));
 			schemeNoSQL = prop.getProperty("schemeNoSQL");
 			indexNoSQL = prop.getProperty("indexNoSQL");
+			typeNoSQL = prop.getProperty("typeNoSQL");
 			
 			inputStream.close();
 			

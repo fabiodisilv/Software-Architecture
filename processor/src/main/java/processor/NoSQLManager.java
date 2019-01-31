@@ -59,7 +59,7 @@ public class NoSQLManager {
 		dataMap.put("stepName", decodedInsertedElement.getStepName());
 		dataMap.put("hold_type", decodedInsertedElement.getHold_type());
 		dataMap.put("hold_flag", decodedInsertedElement.getHold_flag());
-		dataMap.put("event_datetime", decodedInsertedElement.getHold_flag());
+		dataMap.put("event_datetime", decodedInsertedElement.getEvent_datetime());
 
 		IndexRequest indexRequest = new IndexRequest(indexNoSQL, typeNoSQL, eventID).source(dataMap);
 
@@ -96,7 +96,7 @@ public class NoSQLManager {
 		dataMap.put("stepName", decodedDeletedElement.getStepName());
 		dataMap.put("hold_type", decodedDeletedElement.getHold_type());
 		dataMap.put("hold_flag", decodedDeletedElement.getHold_flag());
-		dataMap.put("event_datetime", decodedDeletedElement.getHold_flag());
+		dataMap.put("event_datetime", decodedDeletedElement.getEvent_datetime());
 
 		IndexRequest indexRequest = new IndexRequest(indexNoSQL, typeNoSQL, eventID).source(dataMap);
 

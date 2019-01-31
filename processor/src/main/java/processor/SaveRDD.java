@@ -35,7 +35,7 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 
 						DecodedDeletedElement decodedDeletedElement = decodeDeletedIDs(inhibitEvent.getDeleted());
 
-						insertDecodedInsertedElement(decodedInsertedElement);
+						insertEvents(decodedInsertedElement, decodedDeletedElement);
 
 					}
 
@@ -74,7 +74,7 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 		SQLManager sqlManager = new SQLManager();
 
 		DecodedInsertedElement decodedInsertedElement = new DecodedInsertedElement();
-		
+
 		decodedInsertedElement.setEquipe_OID(inserted.getEquip_OID());
 		decodedInsertedElement.setEquipeName(sqlManager.getEquipeName(inserted.getEquip_OID()));
 
@@ -87,7 +87,7 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 		decodedInsertedElement.setHold_type(inserted.getHold_type());
 
 		decodedInsertedElement.setHold_flag(inserted.getHold_flag());
-		
+
 		decodedInsertedElement.setEvent_datetime(inserted.getEvent_datetime());
 
 		return decodedInsertedElement;
@@ -109,16 +109,21 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 		decodedDeletedElement.setHold_type(deleted.getHold_type());
 
 		decodedDeletedElement.setHold_flag(deleted.getHold_flag());
-		
+
 		decodedDeletedElement.setEvent_datetime(deleted.getEvent_datetime());
 
 		return decodedDeletedElement;
 	}
 
-	private void insertDecodedInsertedElement(DecodedInsertedElement decodedInsertedElement) {
+	private void insertEvents(DecodedInsertedElement decodedInsertedElement,
+			DecodedDeletedElement decodedDeletedElement) {
+
 		NoSQLManager noSQLManager = new NoSQLManager();
 
-		noSQLManager.insertEvent(decodedInsertedElement);
+		noSQLManager.insertInsertedEvent(decodedInsertedElement);
+
+		noSQLManager.insertDeletedEvent(decodedDeletedElement);
+
 	}
 
 }

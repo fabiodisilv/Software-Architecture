@@ -19,6 +19,8 @@ public class ToolThread extends Thread {
 	
 	private String hostMQTT;
 	private String topic;
+	private Integer count=0;
+	
 	
 	@Override
 	public void run() {
@@ -62,7 +64,9 @@ public class ToolThread extends Thread {
 				PublisherMQTT publisherMQTT = new PublisherMQTT(hostMQTT, topic);
 				publisherMQTT.publish(messagePayload, equip_OID);
 
-				Thread.sleep(5000);
+				count ++;
+				System.out.println("Number of messages sent: " + count.toString());
+				//Thread.sleep(5000);
 
 			} catch (Exception e) {
 				e.printStackTrace();

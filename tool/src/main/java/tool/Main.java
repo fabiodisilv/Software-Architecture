@@ -4,7 +4,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		for (int numThread = 0; numThread < 2; numThread++) {
+		for (int numThread = 0; numThread < 4; numThread++) {
 
 			ToolThread toolThread = new ToolThread();
 

@@ -40,7 +40,7 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 
 						DecodedDeletedElement decodedDeletedElement = decodeDeletedIDs(inhibitEvent.getDeleted());
 
-						sqlManager.closeConnection();
+						
 						insertEvents(decodedInsertedElement, decodedDeletedElement);
 
 					}
@@ -48,6 +48,7 @@ public class SaveRDD implements VoidFunction<JavaRDD<String>> {
 				} catch (Exception e) {
 					e.printStackTrace();
 				} finally {
+					sqlManager.closeConnection();
 					System.out.println("Completed!");
 				}
 			}

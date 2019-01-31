@@ -16,11 +16,18 @@ public class Processor {
 	private String hostMQTT;
 	private String topic;
 	
+	private SQLManager sqlManager;
+	private NoSQLManager noSQLManager;
+	
 	public Processor() {
 		setConfiguration();
+		sqlManager = new SQLManager();
+		noSQLManager = new NoSQLManager();
 	}
 	
 	public void startProcessing() {
+		
+		
 		// Create spark configuration
 		SparkConf sparkConf = new SparkConf().setAppName("Processor").setMaster("local[*]");
 
@@ -35,7 +42,7 @@ public class Processor {
 		JavaReceiverInputDStream<String> messages = MQTTUtils.createStream(jssc, hostMQTT, topic);
 
 		// process the messages on the queue and save them to the database
-		messages.foreachRDD(new SaveRDD());
+		messages.foreachRDD(new SaveRDD(sqlManager, noSQLManager));
 
 		// Start the context
 		jssc.start();

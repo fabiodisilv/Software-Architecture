@@ -18,9 +18,14 @@ import model.InhibitEvent;
 import model.Inserted;
 
 public class SaveRDD implements VoidFunction<JavaRDD<String>> {
-
+	
 	private SQLManager sqlManager;
 	private NoSQLManager noSQLManager;
+
+	public SaveRDD(SQLManager sqlManager, NoSQLManager noSQLManager) {
+		this.noSQLManager = noSQLManager;
+		this.sqlManager = sqlManager;
+	}
 
 	public void call(JavaRDD<String> messages) throws Exception {
 		if (messages != null && messages.count() > 0) {

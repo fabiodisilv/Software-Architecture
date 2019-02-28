@@ -57,12 +57,21 @@ public class PublisherMQTT {
 
 			//System.exit(0);
 		} catch (MqttException me) {
-			System.out.println("reason " + me.getReasonCode());
+		/*	System.out.println("reason " + me.getReasonCode());
 			System.out.println("msg " + me.getMessage());
 			System.out.println("loc " + me.getLocalizedMessage());
 			System.out.println("cause " + me.getCause());
 			System.out.println("excep " + me);
-			me.printStackTrace();
+			me.printStackTrace();*/
+			
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			publish(payload, tool);
+			
 		}
 	}
 
